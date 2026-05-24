@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todolist</title>
+    <style>
+        /* --- 明亮科技感核心變數 --- */
+        :root {
+            --bg-color: #f1f5f9;       /* 乾淨的科技白/實驗室淡灰 */
+            --panel-bg: rgba(255, 255, 255, 0.75); /* 明亮毛玻璃底色 */
+            --text-primary: #0f172a;   /* 鋼鐵深灰文字（保證清晰度） */
+            --text-muted: #94a3b8;     /* 數據感淡灰文字 */
+            
+            /* 明亮科技感光譜 */
+            --tech-blue: #0088ff;      /* 極光高亮藍 */
+            --tech-green: #10b981;     /* 數位安全綠 */
+            --tech-pink: #f43f5e;      /* 高阻斷警示粉 */
+            --glow-shadow: rgba(0, 136, 255, 0.15);
+        }
+
+        /* --- 全局基礎樣式 --- */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            
+            /* 明亮科技感：數位電路板微弱網格紋理 */
+            background-image: 
+                linear-gradient(rgba(203, 213, 225, 0.4) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(203, 213, 225, 0.4) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* --- 主標題：數位棱鏡光芒 --- */
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+            color: #1e293b;
+            text-shadow: 2px 2px 0px rgba(0, 136, 255, 0.1);
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        /* 標題下方的未來感雙色裝飾線 */
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--tech-blue), #00f0ff);
+            border-radius: 2px;
+        }
+
+        /* --- 代辦事項容器外殼 --- */
+        .todo-container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* --- 單一卡片：懸浮白瓷毛玻璃 --- */
+        .todo-field {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px); /* 清透的玻璃模糊 */
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 136, 255, 0.15);
+            border-radius: 12px;
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            /* 優雅的淡陰影 */
+            box-shadow: 
+                0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+                0 10px 15px -3px rgba(0, 0, 0, 0.03);
+            width: 100%;             /* 強制卡片填滿父容器的寬度 */
+    max-width: 600px;        /* 限制最大寬度，避免在大螢幕上拉得太長 */
+    box-sizing: border-box;  /* 確保 padding 不會把總寬度撐爆 */
+        }
+
+        /* 滑鼠懸停特效：雷射藍光擴散、卡片浮起 */
+        .todo-field:hover {
+            transform: translateY(-4px) scale(1.01);
+            border-color: var(--tech-blue);
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 136, 255, 0.1), 
+                0 10px 10px -5px rgba(0, 136, 255, 0.04);
+        }
+
+        /* 卡片左側流線動態彩條 */
+        .todo-field::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background: linear-gradient(180deg, var(--tech-blue), #00f0ff);
+        }
+
+        /* --- 內部元素細節排版 --- */
+        
+        /* 建立時間：數據面板格式 */
+        .created {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            background: rgba(0, 136, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 136, 255, 0.1);
+        }
+
+        /* 標題 */
+        .title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-right: 140px; 
+            color: #1e293b;
+        }
+
+        /* 內容區塊：仿亮色終端機 */
+        .content {
+            font-size: 0.95rem;
+            color: #334155;
+            line-height: 1.6;
+            background: rgba(248, 250, 252, 0.8);
+            padding: 14px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            border-left: 3px solid var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        /* 狀態標籤公用樣式 */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px; /* 亮色系更適合膠囊圓角，呈現流線感 */
+            letter-spacing: 0.5px;
+            margin-right: 10px;
+        }
+
+        /* 完成狀態標籤 (初音綠) */
+        .completed {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--tech-green);
+        }
+
+        /* 重要狀態標籤 (雷射粉紅) */
+        .important {
+            background-color: rgba(244, 63, 94, 0.1);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            color: var(--tech-pink);
+        }
+    </style>
+</head>
+<body>
+    <h1>代辦事項列表</h1>
+    
+    <div class="todo-container">
+        {% for todo in todos %}
+        <div class="todo-field">
+            <small class="created">{{ todo.created }}</small>
+            
+            {% if todo.important %}
+            <span class="status-badge important">重要</span>
+            {% endif %}
+
+            {% if todo.completed %}
+            <span class="status-badge completed">完成</span>
+            {% endif %}
+            
+            <div class="title"><b>{{ todo.title }}</b></div>
+
+            {% if todo.content %}
+            <div class="content">{{ todo.content|linebreaks }}</div>
+            {% endif %}
+
+            <a href="{% url 'todo-delete' todo.id %}" class="delete-btn">刪除</a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
