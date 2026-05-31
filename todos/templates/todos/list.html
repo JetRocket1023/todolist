@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" comtent="width=device-width, initial-scale=1.0">
     <title>Todolist</title>
     <style>
         /* --- 明亮科技感核心變數 --- */
@@ -139,11 +139,11 @@
         }
 
         /* 內容區塊：仿亮色終端機 */
-        .content {
+        .comtent {
             font-size: 0.95rem;
-            color: #334155;
+            color: #ffffff;
             line-height: 1.6;
-            background: rgba(248, 250, 252, 0.8);
+            background: rgba(255, 161, 235, 0.8);
             padding: 14px;
             border-radius: 6px;
             border: 1px solid #e2e8f0;
@@ -196,12 +196,13 @@
             
             <div class="title"><b>{{ todo.title }}</b></div>
 
-            {% if todo.content %}
-            <div class="content">{{ todo.content|linebreaks }}</div>
+            {% if todo.comtent %}
+            <div class="comtent">{{ todo.comtent|linebreaks }}</div>
             {% endif %}
 
-            <a href="{% url 'todo-delete' todo.id %}"
-            onclick="return confirm('是否確定刪除!?')"class="delete-btn">刪除</a>
+            <a href="{% url 'todo-delete' todo.id %}"onclick="return confirm('是否確定刪除!?')"class="delete-btn">刪除</a>
+            <a href="{% url 'todo-update' todo.id %}">更新</a>
+        
         </div>
         {% endfor %}
     </div>
