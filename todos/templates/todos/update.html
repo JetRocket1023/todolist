@@ -1,20 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>更新代辦事項</title>
-</head>
-<body>
-    <a href="{% url 'todo-list' %}">首頁</a>
-    <h1>更新代辦事項</h1>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">更新</button>
-    </form>
-    {% if message %}
-    {{message}}
-    {% endif %}
-</body>
-</html>
+{% extends 'base.html'%}
+{% block head %}
+<title>更新代辦標籤</title>
+<style>
+    body{
+        background-color: aquamarine;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<a href="{% url 'todo-list' %}">首頁</a>
+<h1>更新代辦事項</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">更新</button>
+</form>
+{% if message %}
+{{message}}
+{% endif %}
+{% endblock %}
