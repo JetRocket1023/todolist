@@ -11,7 +11,12 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+import pymysql
 
+pymysql.install_as_MySQLdb()
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,11 +30,10 @@ SECRET_KEY = "django-insecure-tp+ftjb8e#)fv_+5$atv_ah$ily4t*j(lpz#phxf7!(9pi6dv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -81,6 +85,19 @@ DATABASES = {
     }
 }
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "HOST": os.environ.get("HOST"),
+        "PORT": int(os.environ.get("PORT")),
+        "USER": os.environ.get("USER"),
+        "PASSWORD": os.environ.get("PASSWORD"),
+        "NAME": os.environ.get("NAME"),
+        "OPTIONS": {
+            "ssl": {"ca": None},
+        },
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

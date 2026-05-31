@@ -68,8 +68,8 @@
         {% if todo.completed %}<span class="badge-completed">完成</span>{% endif %}
     </div>
     <div class="todo-title">{{ todo.title }}</div>
-    {% if todo.content %}
-    <div class="todo-content">{{ todo.content|linebreaks }}</div>
+    {% if todo.comtent %}
+    <div class="todo-content">{{ todo.comtent|linebreaks }}</div>
     {% endif %}
     <div class="todo-actions">
         <a href="{% url 'todo-delete' todo.id %}" onclick="return confirm('確定要刪除「{{ todo.title }}」？')">刪除</a>
